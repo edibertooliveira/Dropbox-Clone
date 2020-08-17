@@ -1,0 +1,23 @@
+{
+  "name": "projeto-dropbox-clone",
+  "version": "1.0.0",
+  "description": "Project developed as an example of the Complete JavaScript Course. I will get knowledge of firebase and how I work in architecture.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edibertooliveira/Dropbox-Clone.git"
+  },
+  "author": "Ediberto Oliveira",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edibertooliveira/Dropbox-Clone/issues"
+  },
+  "homepage": "https://github.com/edibertooliveira/Dropbox-Clone#readme",
+  "dependencies": {
+    "ionicons": "^2.0.1",
+    "bootstrap": "^4.1.0"
+  }
+}
