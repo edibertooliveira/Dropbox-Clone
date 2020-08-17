@@ -4,8 +4,8 @@
   </a>
   <img alt="Repository size" src="https://img.shields.io/github/repo-size/edibertooliveira/Dropbox-Clone?color=red">
 
-  <a aria-label="Completed" href="https://Dropbox-Clone/">
-    <img src="https://img.shields.io/badge/Project-Dropbox-Clone-red"></img>
+  <a aria-label="Completed" href="https://github.com/edibertooliveira/Dropbox-Clone">
+    <img src="https://img.shields.io/badge/Dropbox-Clone-red"></img>
   </a>
   <a href="https://github.com/edibertooliveira/Dropbox-Clone/commits/master">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/edibertooliveira/Dropbox-Clone?color=red">
