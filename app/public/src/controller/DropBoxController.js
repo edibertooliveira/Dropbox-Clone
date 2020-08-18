@@ -34,7 +34,7 @@ class DropBoxController{
         let ajax = new XMLHttpRequest();
 
         ajax.open('POST', '/upload');
-        ajax.onload = event =>{
+        ajax.onload = event=>{
           try{
             resolve(JSON.parse(ajax.responseText));
           }catch(e){
@@ -46,11 +46,12 @@ class DropBoxController{
         }
 
         let formData = new FormData();
-        formData.append('input-file', file)
+        formData.append('input-file', file);
+        
         ajax.send(formData);
       }));
     });
-    
+
     return Promise.all(promises)
   }
 
