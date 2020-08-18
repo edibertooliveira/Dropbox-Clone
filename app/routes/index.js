@@ -7,7 +7,9 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-// CORPO DO ENVIO AJAX
+/*  CARREGAMOS A EXTENSÃO FORMIDABLE, RECEBEMOS O FORM
+    POSTADO PELO USUARIO E SALVAMOS O ARQUIVO ATRAVES DA FUNÇÃO
+    FORM.PARSE*/
 router.post('/upload', (req, res)=>{
 
   let form = new formidable.IncomingForm({
