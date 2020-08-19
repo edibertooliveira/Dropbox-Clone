@@ -8,9 +8,10 @@ class DropBoxController{
     this.progressBarElement = this.snackModalElement.querySelector('.mc-progress-bar-fg');
     this.nameFileElement = this.snackModalElement.querySelector('.filename');
     this.timeLeftElement = this.snackModalElement.querySelector('.timeleft');
-    this.Element = this.snackModalElement.querySelector('#list-of-files-and-directories');
-    this.connectFirebase()
+    this.listFilesElement = document.querySelector('#list-of-files-and-directories');
+    this.connectFirebase();
     this.initEvents();
+    this.readFiles();
 
   }
 
@@ -40,7 +41,7 @@ class DropBoxController{
       this.inputFileElement.click()
     });
     /*QUANDO FOR SELECIONADO ALGUM ARQUIVO MOSTRE O CHANGE DOS ARQUIVOS*/ 
-    //PARA CADA ARQUIVO TRAGA UM ICONE
+    //ENCAMINHE PARA O BANCO DE DADOS FIREBASE
     this.inputFileElement.addEventListener('change', e=>{
       
       this.uploadTask(e.target.files).then(responses => {
@@ -310,14 +311,37 @@ class DropBoxController{
     }
   }
 
-  getFileView(file){
+  //TEMPLETE DOS ICONES
+  getFileView(file, key){
 
-    `
-    <li>
-      ${this.getFileIconView(file)}
-      <div class="name text-center">${file.name}</div>
-    </li>
-    `
+    let li = document.createElement('li');
+
+    li.dataset.key = key;
+    li.innerHTML =`
+          <li>
+            ${this.getFileIconView(file)}
+            <div class="name text-center">${file.name}</div>
+          </li>
+        `;
+    return li; 
+  }
+
+  //ESCUDA SE OUVE MUDANÇAS
+  //PARA CADA ELEMENTO QUE RETORNAR USE UM ICONE
+  readFiles(){
+    this.getFirebaseRef().on('value', snapshot => {
+
+      this.listFilesElement.innerHTML = "";
+
+      snapshot.forEach(snapshotItem => {
+        let key = snapshotItem.key;
+        let data = snapshotItem.val();
+
+        this.listFilesElement.appendChild(this.getFileView(data, key));
+      });
+
+
+    });
   }
 
 
