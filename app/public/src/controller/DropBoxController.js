@@ -318,12 +318,62 @@ class DropBoxController{
 
     li.dataset.key = key;
     li.innerHTML =`
-          <li>
-            ${this.getFileIconView(file)}
-            <div class="name text-center">${file.name}</div>
-          </li>
-        `;
+                    ${this.getFileIconView(file)}
+                    <div class="name text-center">${file.name}</div>
+                  `;
+    this.initEventsLi(li);
     return li; 
+  }
+  //SELECIONA OBJETO DO MOMENTO AO CLICAR
+  initEventsLi(li){
+    li.addEventListener('click', (e)=>{
+
+      // SE A TECLA SHIFT ESTIVER APERTADA E SELECIONE ATÉ O ULTIMO
+      if(e.shiftKey) {
+        //PRIMEIRO LI QUE FOI SELECIONADO
+        let firstLi = this.listFilesElement.querySelector('.selected');
+
+        console.log(firstLi);
+
+        if (firstLi) {
+          let indexStart;
+          let indexEnd;
+          let lis = li.parentElement.childNodes;
+
+          li.parentElement.childNodes.forEach((el, index)=>{
+
+            if (firstLi === el) indexStart = index;
+            if (li === el) indexEnd =index;
+
+          });
+
+          let index = [indexStart, indexEnd].sort();
+          console.log(index);
+
+          lis.forEach((el, i) => {
+
+            if (i >= index[0] && i <= index[1]){
+
+              el.classList.add('selected');
+            }
+
+          });
+
+          return true;
+
+        }
+      }
+      //SE A TECLA CTRL NÃO TIVER APERTADA
+      if(!e.ctrlKey){
+        this.listFilesElement.querySelectorAll('li.selected').forEach(el=>{
+          el.classList.remove('selected');
+        });
+      }
+
+      li.classList.toggle('selected');
+      
+    });
+    
   }
 
   //ESCUDA SE OUVE MUDANÇAS
