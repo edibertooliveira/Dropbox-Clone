@@ -333,32 +333,23 @@ class DropBoxController{
         //PRIMEIRO LI QUE FOI SELECIONADO
         let firstLi = this.listFilesElement.querySelector('.selected');
 
-        console.log(firstLi);
-
         if (firstLi) {
           let indexStart;
           let indexEnd;
           let lis = li.parentElement.childNodes;
 
-          li.parentElement.childNodes.forEach((el, index)=>{
-
+          lis.forEach((el, index)=>{
             if (firstLi === el) indexStart = index;
             if (li === el) indexEnd =index;
-
           });
 
           let index = [indexStart, indexEnd].sort();
-          console.log(index);
 
           lis.forEach((el, i) => {
-
             if (i >= index[0] && i <= index[1]){
-
               el.classList.add('selected');
             }
-
           });
-
           return true;
 
         }
@@ -373,7 +364,7 @@ class DropBoxController{
       li.classList.toggle('selected');
       
     });
-    
+
   }
 
   //ESCUDA SE OUVE MUDANÇAS
