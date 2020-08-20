@@ -2,6 +2,7 @@ class DropBoxController{
 
   constructor(){
 
+    this.onSelectionChange = new Event('selectionChange');
     this.buttonSendFileElement = document.querySelector('#btn-send-file');
     this.inputFileElement = document.querySelector('#files');
     this.snackModalElement = document.querySelector('#react-snackbar-root');
@@ -9,6 +10,12 @@ class DropBoxController{
     this.nameFileElement = this.snackModalElement.querySelector('.filename');
     this.timeLeftElement = this.snackModalElement.querySelector('.timeleft');
     this.listFilesElement = document.querySelector('#list-of-files-and-directories');
+    
+    this.buttonNewFolderFileElement = document.querySelector('#btn-new-folder');
+    this.buttonNameElement = document.querySelector('#btn-rename');
+    this.buttonDeleteFileElement = document.querySelector('#btn-delete');
+
+
     this.connectFirebase();
     this.initEvents();
     this.readFiles();
@@ -34,9 +41,37 @@ class DropBoxController{
     // firebase.analytics();
   }
 
+  getSelection(){
+    return this.listFilesElement.querySelectorAll('.selected'); 
+  }
+
   /*QUANDO CLICAR NO BOTÃO, FORÇA O CLICK NO INPUT FILES E ABRA A JANELA
   QUE VAI ANEXAR ARQUIVOS.*/
   initEvents(){
+
+    this.listFilesElement.addEventListener('selectionChange', e=>{
+
+      switch (this.getSelection().length) {
+        case 0:
+          this.buttonDeleteFileElement.style.display = 'none';
+          this.buttonNameElement.style.display = 'none';
+          
+          break;
+
+        case 1:
+          this.buttonDeleteFileElement.style.display = 'block';
+          this.buttonNameElement.style.display = 'block';
+          
+          break;
+          
+        default:
+          this.buttonDeleteFileElement.style.display = 'block';
+          this.buttonNameElement.style.display = 'none';
+          
+          break;
+      }
+    })
+    
     this.buttonSendFileElement.addEventListener('click', e=>{
       this.inputFileElement.click()
     });
@@ -52,8 +87,6 @@ class DropBoxController{
         });
 
         this.modalToggleShow(false);
-
-
       });
       this.modalToggleShow();
       //RESET
@@ -326,9 +359,10 @@ class DropBoxController{
   }
   //SELECIONA OBJETO DO MOMENTO AO CLICAR
   initEventsLi(li){
+
     li.addEventListener('click', (e)=>{
 
-      // SE A TECLA SHIFT ESTIVER APERTADA E SELECIONE ATÉ O ULTIMO
+      // SE A TECLA SHIFT ESTIVER APERTADA E SELECIONE DO PRIMEIRO AO ULTIMO
       if(e.shiftKey) {
         //PRIMEIRO LI QUE FOI SELECIONADO
         let firstLi = this.listFilesElement.querySelector('.selected');
@@ -337,7 +371,7 @@ class DropBoxController{
           let indexStart;
           let indexEnd;
           let lis = li.parentElement.childNodes;
-
+          
           lis.forEach((el, index)=>{
             if (firstLi === el) indexStart = index;
             if (li === el) indexEnd =index;
@@ -350,18 +384,21 @@ class DropBoxController{
               el.classList.add('selected');
             }
           });
+
+          this.listFilesElement.dispatchEvent(this.onSelectionChange);
           return true;
 
         }
       }
+      
       //SE A TECLA CTRL NÃO TIVER APERTADA
       if(!e.ctrlKey){
         this.listFilesElement.querySelectorAll('li.selected').forEach(el=>{
           el.classList.remove('selected');
         });
       }
-
       li.classList.toggle('selected');
+      this.listFilesElement.dispatchEvent(this.onSelectionChange);
       
     });
 
@@ -380,7 +417,6 @@ class DropBoxController{
 
         this.listFilesElement.appendChild(this.getFileView(data, key));
       });
-
 
     });
   }
