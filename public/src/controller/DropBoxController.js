@@ -49,6 +49,20 @@ class DropBoxController{
   QUE VAI ANEXAR ARQUIVOS.*/
   initEvents(){
 
+    // TROCAR NOME DO ARQUIVO DENTRO DO FIREBASE
+    this.buttonNameElement.addEventListener('click', ()=>{
+      let li = this.getSelection()[0];
+      let file = JSON.parse(li.dataset.file);
+
+      let name = prompt('Renomear o arquivo:', file.name);
+      
+      if(name){
+
+        file.name = name;
+        this.getFirebaseRef().child(li.dataset.key).set(file);
+      }
+    });
+
     this.listFilesElement.addEventListener('selectionChange', e=>{
 
       switch (this.getSelection().length) {
@@ -81,8 +95,6 @@ class DropBoxController{
       
       this.uploadTask(e.target.files).then(responses => {
         responses.forEach(resp =>{
-          console.log(resp.files['input-file']);
-
           this.getFirebaseRef().push().set(resp.files['input-file'])
         });
 
@@ -350,6 +362,8 @@ class DropBoxController{
     let li = document.createElement('li');
 
     li.dataset.key = key;
+    li.dataset.file = JSON.stringify(file);
+    
     li.innerHTML =`
                     ${this.getFileIconView(file)}
                     <div class="name text-center">${file.name}</div>
